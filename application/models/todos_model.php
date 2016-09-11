@@ -1,14 +1,14 @@
 <?php
-  class Messages_Model extends CI_Model{
-    public function get_todos($id){
+  class Todos_Model extends CI_Model{
+    public function get_todos(){
       return $this->db->query("SELECT * FROM todos
-                      WHERE completed = 0 AND user_id = $id
+                      WHERE completed = 0
                       ")->result_array();
     }
 
-    public function get_complete_todos($id){
+    public function get_complete_todos(){
       return $this->db->query("SELECT * FROM todos
-                        WHERE completed = 1 AND user_id = $id
+                        WHERE completed = 1
                         ")->result_array();
     }
 

@@ -54,7 +54,7 @@ class LoginRegister extends CI_Controller {
 			);
 			$this->session->set_userdata('user', $user);
 
-			redirect(base_url('wall_view'));
+			redirect(base_url('task_view'));
 		} else {
 			$this->session->set_flashdata('errors', 'Invalid email or password');
 			redirect(base_url());

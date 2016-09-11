@@ -11,6 +11,7 @@
     }
 
     public function add_todo(){
+      $this->load->model('todos_model');
       $todo_info = array(
         'user_id' => $this->session->userdata['user']['id'],
         'title' => $this->input->post('title'),
@@ -18,8 +19,19 @@
       );
 
       $this->todos_model->add_todo($todo_info);
-      $data['todos'] = $this->todos_model->fetch_todos
-      echo json_encode($data)
+      $data['todos'] = $this->todos_model->get_todos();
+      echo json_encode($data);
+    }
+
+    public function generate_todos(){
+
+      $this->load->model('todos_model');
+
+      $data['todos'] = $this->todos_model->get_todos();
+      $data['complete_todos'] = $this->todos_model->get_complete_todos();
+
+      echo json_encode($data);
+
     }
   }
  ?>

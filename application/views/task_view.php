@@ -6,19 +6,28 @@
 	<script type="text/javascript">
 
 		$(document).ready(function(){
-			$.get("/notes/generate_notes", function(res){
+			$.get("/todos/generate_todos", function(res){
 
-				// console.log(res.notes);
+				console.log(res.todos);
+				console.log(res.complete_todos);
 
-				for(var i = 0; i < res.notes.length; i++){
-          			$(".col-md-12").append("<div class =\'col-md-1\'><p>"+res.notes[i].post+"</p></div>");
+				for(var i = 0; i < res.todos.length; i++){
+          			$(".col-md-4").append("<div class =\'col-md-1\'><p>"
+								+res.todos[i].when_at + res.todos[i].title+
+								" Completed? " + res.todos[i].completed + "</p></div>");
+          		}
+
+				for(var i = 0; i < res.complete_todos.length; i++){
+          			$(".col-md-4").append("<div class =\'col-md-1\'><p>"
+								+res.complete_todos[i].when_at + res.compelte_todos[i].title+
+								" Completed? " +res.complete_todos[i].completed+"</p></div>");
           		}
 
 			}, 'json');
 
-			$('form').submit(function(){
-
-				$.post('/notes/addNote', $(this).serialize(), function(event){
+			$('#newTodo').submit(function(){
+				console.log('form submit in ajax');
+				$.post('/todos/add_todo', $(this).serialize(), function(event){
 					console.log(event);
 					event.preventDefault();
 				}, 'json');
@@ -33,55 +42,32 @@
 			$user = $this->session->userdata['user'];
 			// $all_messages = $this->session->userdata['all_messages'];
 		 ?>
-		<h1>The Wall
+		<h1>todo list
 			<a style="float: right; font-size: 12;" href="<?= base_url('loginregister/logout') ?>">Logout</a>
 		</h1>
-		<h3 style = "padding-left: 10px;">Hello, <?= $user['first_name'] ?>. Make a post here or respond to something below!</h3>
+		<h3 style = "padding-left: 10px;">Hello, <?= $user['first_name'] ?>. Keep track of your tasks here!</h3>
 
 
-		<form action="<?= base_url('messages/add_message') ?>" method="post">
-			<textarea name="post" rows="8" cols="40"></textarea>
-			<input type="submit" value="Submit Post">
+		<form id = "newTodo">
+			<input name="title" type="text"></input>
+			<input name="when_at" type="date"></input>
+			<input type="submit" value="Submit Todo">
 		</form>
 
-		<?php
-			foreach($all_messages as $msg){
-		?>
-			<div id="post">
-				<h1> Post by <?= $msg['first_name'] . " " . $msg['last_name'] ?> </h1>
-				<p> <?= $msg['post'] ?> </p>
-				<?php
-					foreach($msg['comments'] as $comment){
-				?>
-					<p id="post"> <strong><?= $comment['user'] . ": " ?></strong> <?= $comment['comment'] ?>
+		<div class="col-md-4">
+			<p> Incomplete Tasks </p>
+		</div>
 
-					<?php
-						if($comment['user_id'] == $this->session->userdata['user']['id']){
-					?>
-						<button> <a href="<?= base_url('comments/delete_comment') . '/' . $comment['id'] ?>">DELETE</a> </button>
-					<?php
-						}
-					 ?>
-				 	</p>
-				<?php
-					}
-			 	?>
+		<div class="col-md-5">
+			<p> Complete Tasks </p>
+		</div>
 
-				<form action="<?= base_url('comments/add_comment') ?>" method="post">
-					<textarea name="comment" rows="3" cols="40"></textarea>
-					<input type="hidden" name="message_id" value="<?= $msg['id'] ?>">
-					<input type="submit" value="Submit Comment">
-				</form>
-				<?php
-					if($msg['user_id'] == $this->session->userdata['user']['id']){
-				?>
-						<a href="<?= base_url('messages/delete_message') . '/' . $msg['id'] ?>">DELETE</a>
-		<?php } ?>
-				<p class="footer"> Written at: <?= $msg['created_at'] ?> </p>
-			</div>
-		<?php
-			}
-	  ?>
+		<form>
+			<input type="hidden" name="name" value="res.todos.id">
+			<input type="checkbox">
+		</form>
+
+
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 	</div>
 </body>

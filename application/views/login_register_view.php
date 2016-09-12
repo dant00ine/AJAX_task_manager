@@ -7,7 +7,7 @@
 <body>
 <div id="container">
 
-	<h1>Task Manager</h1>
+	<h1>Task Tracker</h1>
 	<div class="margin">
 		<div class="login">
 			<h3>Login</h3>
@@ -19,6 +19,7 @@
 		</div>
 
 		<div class="register">
+			<h3>Register</h3>
 			<form action="<?= base_url('loginregister/register') ?>" method="post">
 				<p> First Name: <input type="text" name="first_name"> </p>
 				<p> Last Name: <input type='test' name='last_name'> </p>

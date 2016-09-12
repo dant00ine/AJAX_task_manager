@@ -1,15 +1,29 @@
 <?php
   class Todos_Model extends CI_Model{
-    public function get_todos(){
+    public function get_todos($id){
       return $this->db->query("SELECT * FROM todos
                       WHERE completed = 0
                       ")->result_array();
     }
 
-    public function get_complete_todos(){
+    public function get_complete_todos($id){
       return $this->db->query("SELECT * FROM todos
-                        WHERE completed = 1
+                        WHERE completed = 1 AND user_id = $id
                         ")->result_array();
+    }
+
+    public function complete($id){
+      $query = "UPDATE todos SET completed = 1
+            WHERE id = ?";
+      $values = array($id);
+      return $this->db->query($query, $values);
+    }
+
+    public function incomplete($id){
+      $query = "UPDATE todos SET completed = 0
+              WHERE id = ?";
+      $values = array($id);
+      return $this->db->query($query, $values);
     }
 
     public function add_todo($todo_info){
@@ -19,11 +33,5 @@
 
       $this->db->query($query, $values);
     }
-
-    // public function delete_todo($id){
-    //   $query = "DELETE FROM todos WHERE id = ?";
-    //   $values = $id;
-    //   $this->db->query($query, $values);
-    // }
   }
  ?>
